@@ -1,0 +1,23 @@
+< THE SYMBOL TABLE >  Zadacha 1.exe  --  emu8086 assembler version: 4.08 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+DATA                     	00000     	-5        	SEGMENT   	(ITSELF)  
+PKEY                     	00000     	1         	VAR       	data      
+ARRAY                    	00011     	1         	VAR       	data      
+NUMARRAY                 	00025     	1         	VAR       	data      
+STACK                    	00004     	-5        	SEGMENT   	(ITSELF)  
+CODE                     	00014     	-5        	SEGMENT   	(ITSELF)  
+START                    	00000     	-1        	LABEL     	code      
+INPUT                    	0000F     	-1        	LABEL     	code      
+DONEINPUT                	0001C     	-1        	LABEL     	code      
+ISNUM                    	00024     	-1        	LABEL     	code      
+ISABOVEO                 	00033     	-1        	LABEL     	code      
+ISBETWEEN                	0003C     	-1        	LABEL     	code      
+ENDARRAY                 	00041     	-1        	LABEL     	code      
+STCK                     	00046     	-1        	LABEL     	code      
+DONE                     	00053     	-1        	LABEL     	code      
+===================================================================================================
+[ 06-Nov-18  --  8:36:52 PM ] 
+< END >
+ 

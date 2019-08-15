@@ -1,0 +1,154 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+Zadacha 2.exe -- emu8086 assembler version: 4.04  
+ 
+[ 10/30/2018  --  7:15:57 PM ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ; multi-segment executable file template.
+[   2]        :                                       
+[   3]        :                                       data segment
+[   4]        :                                       ; add your data here!
+[   5]    0000: 70 72 65 73 73 20 61 6E 79 20 6B 65   pkey db "press any key...$"
+                79 2E 2E 2E 24                      
+[   6]    0011: 00                                    N db ?
+[   7]    0012: 00                                    S db ?
+[   8]        :                                       ends
+[   9]        :                                       
+[  10]        :                                       stack segment
+[  11]    0020: 00 00 00 00 00 00 00 00 00 00 00 00   dw   128  dup(0)
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00                         
+[  12]        :                                       ends
+[  13]        :                                       
+[  14]        :                                       code segment
+[  15]    0120:                                       start:
+[  16]        :                                       ; set segment registers:
+[  17]    0120: B8 00 00                              mov ax, data
+[  18]    0123: 8E D8                                 mov ds, ax
+[  19]    0125: 8E C0                                 mov es, ax
+[  20]        :                                       
+[  21]        :                                       ; add your code here
+[  22]    0127: B4 01                                 mov ah, 1
+[  23]    0129: CD 21                                 int 21h
+[  24]    012B: 8A D8                                 mov bl, al
+[  25]    012D: 80 EB 30                              sub bl, 30h
+[  26]    0130: B4 00                                 mov ah, 0d
+[  27]    0132: B1 0A                                 mov cl, 10d
+[  28]    0134: F6 E1                                 mul cl ; ednocifren, da stane dvocifren broj
+[  29]    0136: 8A D8                                 mov bl, al
+[  30]        :                                       
+[  31]        :                                       
+[  32]    0138: B4 01                                 mov ah, 1
+[  33]    013A: CD 21                                 int 21h
+[  34]    013C: 02 D8                                 add bl, al
+[  35]    013E: 88 1E 11 00                           mov N, bl
+[  36]        :                                       
+[  37]    0142: B1 01                                 mov cl, 1d
+[  38]    0144: C6 06 12 00 00                        mov S, 0d
+[  39]        :                                       
+[  40]    0149:                                       sumiranje:
+[  41]    0149: 38 0E 11 00                           cmp N, cl
+[  42]    014D: 74 19                                 je kraj
+[  43]    014F: B4 00                                 mov ah, 0d
+[  44]    0151: 8A C1                                 mov al, cl
+[  45]    0153: BB 03 00                              mov bx, 3d
+[  46]    0156: F7 F3                                 div bx
+[  47]        :                                       
+[  48]    0158: 3C 01                                 cmp al, 1d ; ostatokot e vo ah, proveri dali == 1
+[  49]    015A: 74 04                                 je dodadi
+[  50]    015C: FE C1                                 inc cl
+[  51]    015E: EB E9                                 jmp sumiranje
+[  52]        :                                       
+[  53]    0160:                                       dodadi:
+[  54]    0160: 00 0E 12 00                           add S, cl
+[  55]    0164: FE C1                                 inc cl
+[  56]    0166: EB E1                                 jmp sumiranje
+[  57]        :                                       
+[  58]        :                                       
+[  59]        :                                       
+[  60]    0168:                                       kraj:
+[  61]    0168: 8A 16 12 00                           mov dl, S
+[  62]    016C: B8 02 00                              mov ax, 02h
+[  63]    016F: CD 21                                 int 21h
+[  64]        :                                       
+[  65]        :                                       
+[  66]        :                                       
+[  67]        :                                       
+[  68]        :                                       
+[  69]        :                                       
+[  70]        :                                       
+[  71]    0171: B8 00 4C                              mov ax, 4c00h ; exit to operating system.
+[  72]    0174: CD 21                                 int 21h
+[  73]        :                                       ends
+[  74]        :                                       
+[  75]        :                                       end start ; set entry point and stop the assembler.
+[  76]        :                                       
+[  77]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: 76      -   bytes on last page (l.byte)
+0003: 01      -   bytes on last page (h.byte)
+0004: 02      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 02      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 00      -   SP - stack pointer (l.byte)
+0011: 01      -   SP - stack pointer (h.byte)
+0012: 05      -   check sum (l.byte)
+0013: 6D      -   check sum (h.byte)
+0014: 00      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 12      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: 01      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 12      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================

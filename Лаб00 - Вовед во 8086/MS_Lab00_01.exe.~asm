@@ -1,0 +1,49 @@
+; multi-segment executable file template.
+
+data segment
+; add your data here!
+pkey db "press any key...$"
+msg1 db 10,13,"Vnesi go x: $"
+ends
+
+stack segment
+dw   128  dup(0)
+ends
+
+code segment
+start:
+; set segment registers:
+mov ax, data
+mov ds, ax
+mov es, ax
+
+; add your code here
+lea dx, msg1
+
+mov ah,1
+int 21h
+mov ch, al
+
+mul ah
+mov cx, ax
+
+mov bh, 7d
+mul bh     ; (x^2) * 7
+mov cx, ax
+
+sub ax, 10d ; (x^2)*7 - 10
+mov cx, ax
+add cx, 30h
+mov ah, 2
+mov dx, cx
+add dl, 30h
+int 21h
+
+
+mov ax, 4c00h ; exit to operating system.
+int 21h
+ends
+
+end start ; set entry point and stop the assembler.
+
+

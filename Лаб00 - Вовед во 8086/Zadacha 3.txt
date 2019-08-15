@@ -1,0 +1,10 @@
+0 0 0 0 0 0 0 0   1 1 1 0 1 0 1 0
+Carry flag = 0
+Parity flag = 0
+Auxiliary carry flag = 0
+Zero flag = 1
+Sign flag = 1
+Trace flag = 0
+Interrupt flag = 0
+Direction flag = 0
+Overflow flag = 0

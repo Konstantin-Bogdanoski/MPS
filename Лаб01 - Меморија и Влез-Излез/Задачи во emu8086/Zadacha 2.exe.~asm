@@ -1,0 +1,52 @@
+; multi-segment executable file template.
+
+data segment
+; add your data here!
+pkey db "press any key...$"
+broj db ?
+ends
+
+stack segment
+dw   128  dup(0)
+ends
+
+code segment
+start:
+; set segment registers:
+mov ax, data
+mov ds, ax
+mov es, ax
+
+; add your code here
+mov ah, 01h
+int 21h         ;vnesuvanje cifra
+mov broj, al
+
+mov al, broj ;pravime x*10, za da imame mesto za narednata edinica
+mov bl, 10d
+mul bl
+mov broj, al
+
+mov ah, 01h
+int 21h
+add broj, al
+
+mov al, broj ;povtorno x*10 za da dobieme 3cifren broj
+mov bl, 10d
+mul bl
+mov broj, al
+
+mov ah, 01h
+int 21h
+add broj, al
+
+mov ax, 4c00h ; exit to operating system.
+int 21h
+ends
+
+end start ; set entry point and stop the assembler.
+
+
+
+
+; [SOURCE]: C:\Users\Konstantin Bogdanosk\Desktop\Лаб01_Меморија и Влез-Излез\Задачи во emu8086\Zadacha 1.asm

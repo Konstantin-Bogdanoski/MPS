@@ -1,0 +1,173 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+Zadacha 1.exe -- emu8086 assembler version: 4.08  
+ 
+[ 06-Nov-18  --  8:36:52 PM ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ; multi-segment executable file template.
+[   2]        :                                       
+[   3]        :                                       data segment
+[   4]        :                                       ; add your data here!
+[   5]    0000: 70 72 65 73 73 20 61 6E 79 20 6B 65   pkey db "press any key...$"
+                79 2E 2E 2E 24                      
+[   6]    0011: 00 00 00 00 00 00 00 00 00 00 00 00   array db 20 dup(?) ;pocetna niza
+                00 00 00 00 00 00 00 00             
+[   7]    0025: 00 00 00 00 00 00 00 00 00 00 00 00   numarray db 20 dup(?) ;zavrshna niza
+                00 00 00 00 00 00 00 00             
+[   8]        :                                       ends
+[   9]        :                                       
+[  10]        :                                       stack segment
+[  11]    0040: 00 00 00 00 00 00 00 00 00 00 00 00   dw   128  dup(0)
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00                         
+[  12]        :                                       ends
+[  13]        :                                       
+[  14]        :                                       code segment
+[  15]    0140:                                       start:
+[  16]        :                                       ; set segment registers:
+[  17]    0140: B8 00 00                              mov ax, data
+[  18]    0143: 8E D8                                 mov ds, ax
+[  19]    0145: 8E C0                                 mov es, ax
+[  20]        :                                       
+[  21]        :                                       ; add your code here
+[  22]        :                                       
+[  23]    0147: BB 11 00                              mov bx, offset array
+[  24]    014A: B1 24                                 mov cl, '$'
+[  25]    014C: 88 0F                                 mov [bx], cl
+[  26]    014E: 43                                    inc bx
+[  27]        :                                       
+[  28]    014F:                                       input:
+[  29]    014F: B4 01                                 mov ah, 01d
+[  30]    0151: CD 21                                 int 21h
+[  31]    0153: 3A C1                                 cmp al, cl ; if(char == '$') break
+[  32]    0155: 74 05                                 je doneinput
+[  33]        :                                       
+[  34]    0157: 88 07                                 mov [bx], al
+[  35]    0159: 43                                    inc bx
+[  36]    015A: EB F3                                 jmp input;all OK
+[  37]        :                                       
+[  38]    015C:                                       doneinput:
+[  39]        :                                       
+[  40]    015C: B1 24                                 mov cl, '$'
+[  41]    015E: B5 00                                 mov ch, 0d
+[  42]    0160: 51                                    push cx
+[  43]        :                                       
+[  44]        :                                       
+[  45]    0161: BA 25 00                              mov dx, offset numarray
+[  46]        :                                       
+[  47]    0164:                                       isNum:
+[  48]    0164: B1 24                                 mov cl, '$'
+[  49]    0166: 38 0F                                 cmp [bx], cl ;dali imame stignato do krajot na nizata
+[  50]    0168: 74 17                                 je endArray
+[  51]        :                                       
+[  52]    016A: B1 30                                 mov cl, 30h
+[  53]    016C: 38 0F                                 cmp [bx], cl
+[  54]    016E: 73 03                                 jae isAboveO
+[  55]    0170: 4B                                    dec bx   ;naredna memory lokacija
+[  56]    0171: EB F1                                 jmp isNum
+[  57]        :                                       
+[  58]    0173:                                       isAboveO: ;Znachi  deka e pogolemo ili ednakvo od 0
+[  59]    0173: B1 39                                 mov cl, 39h
+[  60]    0175: 38 0F                                 cmp [bx], cl
+[  61]    0177: 76 03                                 jbe isBetween
+[  62]    0179: 4B                                    dec bx
+[  63]    017A: EB E8                                 jmp isNum
+[  64]        :                                       
+[  65]    017C:                                       isBetween:
+[  66]    017C: FF 37                                 push [bx]
+[  67]    017E: 4B                                    dec bx
+[  68]    017F: EB E3                                 jmp isNum
+[  69]        :                                       
+[  70]        :                                       
+[  71]    0181:                                       endArray:
+[  72]        :                                       
+[  73]    0181: B1 24                                 mov cl, '$'
+[  74]        :                                       
+[  75]    0183: BB 11 00                              mov bx, offset array
+[  76]        :                                       
+[  77]    0186:                                       stck:
+[  78]    0186: 5B                                    pop bx
+[  79]    0187: 3A D9                                 cmp bl, cl
+[  80]    0189: 74 08                                 je done
+[  81]    018B: 8A D3                                 mov dl, bl
+[  82]    018D: B4 02                                 mov ah, 02h
+[  83]    018F: CD 21                                 int 21h
+[  84]    0191: EB F3                                 jmp stck
+[  85]        :                                       
+[  86]    0193:                                       done:
+[  87]        :                                       
+[  88]    0193: B8 00 4C                              mov ax, 4c00h ; exit to operating system.
+[  89]    0196: CD 21                                 int 21h
+[  90]        :                                       ends
+[  91]        :                                       
+[  92]        :                                       end start ; set entry point and stop the assembler.
+[  93]        :                                       
+[  94]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: 98      -   bytes on last page (l.byte)
+0003: 01      -   bytes on last page (h.byte)
+0004: 02      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 04      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 00      -   SP - stack pointer (l.byte)
+0011: 01      -   SP - stack pointer (h.byte)
+0012: 42      -   check sum (l.byte)
+0013: 03      -   check sum (h.byte)
+0014: 00      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 14      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: 01      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 14      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================
